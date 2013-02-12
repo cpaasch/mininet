@@ -613,7 +613,7 @@ class Mininet( object ):
 
     # XXX This should be cleaned up
 
-    def iperf( self, hosts=None, l4Type='TCP', udpBw='10M' ):
+    def iperf( self, hosts=None, l4Type='TCP', udpBw='10M', args='-t 5'):
         """Run iperf between two hosts.
            hosts: list of hosts; if None, uses opposite hosts
            l4Type: string, one of [ TCP, UDP ]
@@ -645,8 +645,8 @@ class Mininet( object ):
                     'sh -c "echo A | telnet -e A %s 5001"' % server.IP()):
                 output('waiting for iperf to start up...')
                 sleep(.5)
-        cliout = client.cmd( iperfArgs + '-t 5 -c ' + server.IP() + ' ' +
-                             bwArgs )
+        cliout = client.cmd( iperfArgs + ' -c ' + server.IP() + ' ' +
+                             bwArgs + ' ' + args)
         debug( 'Client output: %s\n' % cliout )
         server.sendInt()
         servout += server.waitOutput()
