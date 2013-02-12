@@ -191,6 +191,10 @@ class TCIntf( Intf ):
             if ( speedup > 0 and
                  self.node.name[0:1] == 's' ):
                 bw = speedup
+
+            burst = bw * 1000 * 1000 / 1000 / 8
+            if burst < 2000:
+                burst = 2000
             # This may not be correct - we should look more closely
             # at the semantics of burst (and cburst) to make sure we
             # are specifying the correct sizes. For now I have used
@@ -203,12 +207,12 @@ class TCIntf( Intf ):
                 if latency_ms is None:
                     latency_ms = 15 * 8 / bw
                 cmds += [ '%s qdisc add dev %s root handle 5: tbf ' +
-                          'rate %fMbit burst 15000 latency %fms' %
-                          ( bw, latency_ms ) ]
+                          'rate %fMbit burst %s latency %fms' %
+                          ( bw, burst, latency_ms ) ]
             else:
                 cmds += [ '%s qdisc add dev %s root handle 5:0 htb default 1',
                           '%s class add dev %s parent 5:0 classid 5:1 htb ' +
-                          'rate %fMbit burst 15k' % bw ]
+                          'rate %fMbit burst %s' % (bw, burst) ]
             parent = ' parent 5:1 '
 
             # ECN or RED
