@@ -178,7 +178,7 @@ class TCIntf( Intf ):
        as well as delay, loss and max queue length"""
 
     def bwCmds( self, bw=None, speedup=0, use_hfsc=False, use_tbf=False,
-                latency_ms=None, enable_ecn=False, enable_red=False ):
+                latency_ms=None, enable_ecn=False, enable_red=False, hz = 250 ):
         "Return tc commands to set bandwidth"
 
         cmds, parent = [], ' root '
@@ -192,7 +192,7 @@ class TCIntf( Intf ):
                  self.node.name[0:1] == 's' ):
                 bw = speedup
 
-            burst = bw * 1000 * 1000 / 1000 / 8
+            burst = (bw * 1000.0 * 1000) / (hz * 8)
             if burst < 2000:
                 burst = 2000
             # This may not be correct - we should look more closely
