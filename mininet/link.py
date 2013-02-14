@@ -212,7 +212,7 @@ class TCIntf( Intf ):
             else:
                 cmds += [ '%s qdisc add dev %s root handle 5:0 htb default 1',
                           '%s class add dev %s parent 5:0 classid 5:1 htb ' +
-                          'rate %fMbit burst %s' % (bw, burst) ]
+                          'rate %fMbit burst %s cburst %s' % (bw, burst, burst) ]
             parent = ' parent 5:1 '
 
             # ECN or RED
