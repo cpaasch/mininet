@@ -605,7 +605,7 @@ class Mininet( object ):
         r = r'([\d\.]+ \w+/sec)'
         m = re.findall( r, iperfOutput )
         if m:
-            return m[-1]
+            return m[-2]
         else:
             # was: raise Exception(...)
             error( 'could not parse iperf output: ' + iperfOutput )
